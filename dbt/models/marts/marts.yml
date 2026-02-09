@@ -1,0 +1,110 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: |
+      Fact table containing order-level information.
+      One row per order with all relevant metrics and attributes.
+    columns:
+      - name: order_id
+        description: Primary key for orders
+        tests:
+          - unique
+          - not_null
+      
+      - name: customer_id
+        description: Foreign key to dim_customers
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id
+      
+      - name: order_date
+        description: Date when order was placed
+        tests:
+          - not_null
+      
+      - name: total_amount
+        description: Total order value
+        tests:
+          - not_null
+
+  - name: dim_customers
+    description: |
+      Customer dimension table containing all customer attributes
+      and calculated metrics like lifetime value.
+    columns:
+      - name: customer_id
+        description: Primary key for customers
+        tests:
+          - unique
+          - not_null
+      
+      - name: email
+        description: Customer email
+        tests:
+          - unique
+          - not_null
+      
+      - name: customer_segment
+        description: Customer segmentation based on order frequency
+        tests:
+          - accepted_values:
+              values: ['no_orders', 'one_time', 'regular', 'loyal']
+      
+      - name: lifetime_value
+        description: Total revenue from customer
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: dim_products
+    description: |
+      Product dimension table containing product catalog
+      information and inventory status.
+    columns:
+      - name: product_id
+        description: Primary key for products
+        tests:
+          - unique
+          - not_null
+      
+      - name: product_name
+        description: Product name
+        tests:
+          - not_null
+      
+      - name: margin_percentage
+        description: Profit margin as percentage
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= -100"
+          - dbt_utils.expression_is_true:
+              expression: "<= 100"
+
+  - name: agg_daily_sales
+    description: |
+      Daily aggregated sales metrics.
+      One row per date with all relevant KPIs.
+    columns:
+      - name: order_date
+        description: Date of aggregation
+        tests:
+          - unique
+          - not_null
+      
+      - name: total_revenue
+        description: Total revenue for the day
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+      
+      - name: total_orders
+        description: Number of orders placed
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"

@@ -1,0 +1,24 @@
+ecommerce_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('DB_HOST', 'postgres') }}"
+      user: "{{ env_var('DB_USER', 'analytics_user') }}"
+      password: "{{ env_var('DB_PASSWORD', 'analytics_password') }}"
+      port: "{{ env_var('DB_PORT', 5432) | int }}"
+      dbname: "{{ env_var('DB_NAME', 'analytics') }}"
+      schema: dev
+      threads: 4
+      keepalives_idle: 0
+      
+    prod:
+      type: postgres
+      host: "{{ env_var('DB_HOST', 'postgres') }}"
+      user: "{{ env_var('DB_USER', 'analytics_user') }}"
+      password: "{{ env_var('DB_PASSWORD', 'analytics_password') }}"
+      port: "{{ env_var('DB_PORT', 5432) | int }}"
+      dbname: "{{ env_var('DB_NAME', 'analytics') }}"
+      schema: prod
+      threads: 8
+      keepalives_idle: 0

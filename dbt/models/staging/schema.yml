@@ -1,0 +1,141 @@
+version: 2
+
+sources:
+  - name: ecommerce
+    description: Raw e-commerce data from operational database
+    database: analytics
+    schema: raw
+    tables:
+      - name: raw_customers
+        description: Customer master data
+        columns:
+          - name: id
+            description: Primary key for customers
+            tests:
+              - unique
+              - not_null
+          - name: email
+            description: Customer email address
+            tests:
+              - unique
+              - not_null
+              
+      - name: raw_orders
+        description: Order transactions
+        columns:
+          - name: id
+            description: Primary key for orders
+            tests:
+              - unique
+              - not_null
+          - name: customer_id
+            description: Foreign key to customers
+            tests:
+              - not_null
+              - relationships:
+                  to: source('ecommerce', 'raw_customers')
+                  field: id
+                  
+      - name: raw_products
+        description: Product catalog
+        columns:
+          - name: id
+            description: Primary key for products
+            tests:
+              - unique
+              - not_null
+          - name: sku
+            description: Stock keeping unit
+            tests:
+              - unique
+              - not_null
+              
+      - name: raw_order_items
+        description: Order line items
+        columns:
+          - name: id
+            description: Primary key for order items
+            tests:
+              - unique
+              - not_null
+          - name: order_id
+            description: Foreign key to orders
+            tests:
+              - not_null
+              - relationships:
+                  to: source('ecommerce', 'raw_orders')
+                  field: id
+          - name: product_id
+            description: Foreign key to products
+            tests:
+              - not_null
+              - relationships:
+                  to: source('ecommerce', 'raw_products')
+                  field: id
+
+models:
+  - name: stg_customers
+    description: Staging layer for customers with cleaned and standardized data
+    columns:
+      - name: customer_id
+        description: Unique identifier for each customer
+        tests:
+          - unique
+          - not_null
+      - name: email
+        description: Customer email address
+        tests:
+          - unique
+          - not_null
+      - name: full_name
+        description: Concatenated first and last name
+        
+  - name: stg_orders
+    description: Staging layer for orders with calculated totals
+    columns:
+      - name: order_id
+        description: Unique identifier for each order
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Foreign key to customers
+        tests:
+          - not_null
+      - name: total_amount
+        description: Total order amount including tax and shipping
+        tests:
+          - not_null
+          
+  - name: stg_products
+    description: Staging layer for products with margin calculations
+    columns:
+      - name: product_id
+        description: Unique identifier for each product
+        tests:
+          - unique
+          - not_null
+      - name: sku
+        description: Stock keeping unit
+        tests:
+          - unique
+          - not_null
+      - name: margin_percentage
+        description: Profit margin as percentage
+        
+  - name: stg_order_items
+    description: Staging layer for order line items
+    columns:
+      - name: order_item_id
+        description: Unique identifier for each order item
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: Foreign key to orders
+        tests:
+          - not_null
+      - name: product_id
+        description: Foreign key to products
+        tests:
+          - not_null

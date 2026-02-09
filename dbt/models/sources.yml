@@ -1,0 +1,101 @@
+version: 2
+
+sources:
+  - name: ecommerce
+    description: Raw e-commerce data from operational database
+    database: analytics
+    schema: public
+    
+    tables:
+      - name: raw_orders
+        description: Raw orders data from transactional system
+        columns:
+          - name: order_id
+            description: Primary key for orders
+            tests:
+              - unique
+              - not_null
+          
+          - name: customer_id
+            description: Foreign key to customers
+            tests:
+              - not_null
+              - relationships:
+                  to: source('ecommerce', 'raw_customers')
+                  field: customer_id
+          
+          - name: order_date
+            description: Date when the order was placed
+            tests:
+              - not_null
+          
+          - name: amount
+            description: Order amount before taxes and fees
+            tests:
+              - not_null
+          
+          - name: status
+            description: Current status of the order
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['pending', 'processing', 'completed', 'cancelled', 'refunded']
+      
+      - name: raw_customers
+        description: Raw customer data
+        columns:
+          - name: customer_id
+            description: Primary key for customers
+            tests:
+              - unique
+              - not_null
+          
+          - name: email
+            description: Customer email address
+            tests:
+              - not_null
+              - unique
+          
+          - name: first_name
+            description: Customer first name
+            tests:
+              - not_null
+          
+          - name: last_name
+            description: Customer last name
+            tests:
+              - not_null
+          
+          - name: created_at
+            description: Timestamp when customer was created
+            tests:
+              - not_null
+      
+      - name: raw_products
+        description: Raw product catalog data
+        columns:
+          - name: product_id
+            description: Primary key for products
+            tests:
+              - unique
+              - not_null
+          
+          - name: product_name
+            description: Name of the product
+            tests:
+              - not_null
+          
+          - name: category
+            description: Product category
+            tests:
+              - not_null
+          
+          - name: price
+            description: Current product price
+            tests:
+              - not_null
+          
+          - name: cost
+            description: Cost of the product
+            tests:
+              - not_null
