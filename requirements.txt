@@ -1,0 +1,27 @@
+# Core dependencies
+dbt-core==1.7.4
+dbt-postgres==1.7.4
+
+# Data generation
+faker==22.0.0
+
+# Data quality
+great-expectations==0.18.8
+
+# SQL linting
+sqlfluff==3.0.0
+
+# Utilities
+python-dotenv==1.0.0
+pyyaml==6.0.1
+pandas==2.1.4
+psycopg2-binary==2.9.9
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+
+# Development
+black==23.12.1
+flake8==7.0.0
+pre-commit==3.6.0

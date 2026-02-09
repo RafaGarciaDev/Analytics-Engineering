@@ -1,272 +1,204 @@
-# 🚀 Quick Start Guide - Analytics Engineering Platform
+# 🚀 Analytics Engineering Platform
 
-## ✨ O que você recebeu
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![dbt](https://img.shields.io/badge/dbt-1.7+-orange.svg)](https://www.getdbt.com/)
+[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
+[![Airflow](https://img.shields.io/badge/airflow-2.8+-green.svg)](https://airflow.apache.org/)
 
-Um projeto **completo e profissional** de Analytics Engineering pronto para seu portfólio!
+Uma plataforma moderna de Analytics Engineering construída com as melhores práticas da indústria, demonstrando transformação de dados, orquestração, qualidade e governança.
 
-### Conteúdo do Projeto
+## 📋 Índice
+
+- [Visão Geral](#visão-geral)
+- [Arquitetura](#arquitetura)
+- [Tecnologias](#tecnologias)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Início Rápido](#início-rápido)
+- [Features](#features)
+- [Casos de Uso](#casos-de-uso)
+
+## 🎯 Visão Geral
+
+Este projeto demonstra uma implementação completa de Analytics Engineering, incluindo:
+
+- **Transformação de Dados**: Modelagem dimensional com dbt
+- **Orquestração**: Pipelines automatizados com Apache Airflow
+- **Qualidade de Dados**: Testes automatizados e validações
+- **Documentação**: Documentação automática de dados e linhagem
+- **Governança**: Controle de versão e CI/CD
+
+### Caso de Uso: E-commerce Analytics
+
+A plataforma processa dados de um e-commerce fictício, incluindo:
+- Dados de vendas e transações
+- Informações de clientes e produtos
+- Métricas de marketing e campanhas
+- Analytics de comportamento do usuário
+
+## 🏗️ Arquitetura
 
 ```
-📦 analytics-engineering-platform/
-├── 📖 README.md                    # Documentação principal
-├── 📋 PROJECT_OVERVIEW.md          # Visão geral para portfólio
-├── ⚙️  Makefile                     # Comandos de automação
-├── 🐳 docker-compose.yml           # Orquestração de containers
+┌─────────────────┐
+│  Data Sources   │
+│  (CSV/API/DB)   │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   Raw Layer     │
+│  (Bronze/Raw)   │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Staging Layer   │
+│   (Silver)      │  ◄── dbt Transformations
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Marts Layer    │
+│   (Gold)        │  ◄── Business Logic
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   Analytics     │
+│  (Dashboard/BI) │
+└─────────────────┘
+```
+
+### Camadas de Dados
+
+1. **Bronze (Raw)**: Dados brutos sem transformação
+2. **Silver (Staging)**: Limpeza, padronização e enriquecimento
+3. **Gold (Marts)**: Modelos dimensionais para análise
+
+## 🛠️ Tecnologias
+
+### Core Stack
+- **dbt** - Transformação de dados e modelagem
+- **Apache Airflow** - Orquestração de workflows
+- **PostgreSQL** - Data Warehouse (para demo)
+- **Docker** - Containerização
+
+### Qualidade & Testes
+- dbt Tests - Testes de integridade de dados
+- Great Expectations - Validação de qualidade de dados
+- SQLFluff - Linting de SQL
+
+## 📁 Estrutura do Projeto
+
+```
+analytics-engineering-platform/
 │
-├── 🔧 dbt/                         # Transformação de dados
+├── dbt/                          # Projeto dbt
 │   ├── models/
-│   │   ├── staging/                # 4 modelos staging (Silver)
-│   │   └── marts/                  # 5+ modelos marts (Gold)
-│   ├── macros/                     # Macros utilitárias
-│   ├── dbt_project.yml
-│   └── profiles.yml
+│   │   ├── staging/             # Modelos staging (silver)
+│   │   ├── intermediate/        # Modelos intermediários
+│   │   └── marts/               # Modelos de negócio (gold)
+│   ├── macros/                  # Macros reutilizáveis
+│   ├── tests/                   # Testes customizados
+│   └── seeds/                   # Dados estáticos
 │
-├── 🔄 airflow/                     # Orquestração
-│   └── dags/
-│       ├── daily_analytics.py      # Pipeline diário
-│       └── weekly_reports.py       # Relatórios semanais
+├── airflow/                     # Apache Airflow
+│   ├── dags/                    # DAGs de orquestração
+│   ├── plugins/                 # Plugins customizados
+│   └── config/                  # Configurações
 │
-├── 📊 data/                        # Dados de exemplo
-├── 🛠️  scripts/                     # Scripts utilitários
-│   └── seed_data.py                # Gerador de dados
-│
-├── 📚 docs/                        # Documentação
-│   ├── architecture.md             # Arquitetura detalhada
-│   └── setup-guide.md              # Guia de instalação
-│
-└── 🔍 .github/workflows/           # CI/CD
-    └── ci.yml                      # Testes automatizados
+├── data/                        # Dados de exemplo
+├── scripts/                     # Scripts utilitários
+├── docs/                        # Documentação
+└── tests/                       # Testes de integração
 ```
 
----
+## 🚀 Início Rápido
 
-## 🎯 Como Usar Este Projeto
+### Pré-requisitos
+- Docker & Docker Compose
+- Python 3.11+
+- Git
 
-### 1. **Para seu Portfólio** 📂
+### Instalação
 
-#### No GitHub:
+1. **Clone o repositório**
 ```bash
-# Descompacte o arquivo
-tar -xzf analytics-engineering-platform.tar.gz
-
-# Entre no diretório
+git clone https://github.com/seu-usuario/analytics-engineering-platform.git
 cd analytics-engineering-platform
-
-# Inicialize o git
-git init
-git add .
-git commit -m "Initial commit: Analytics Engineering Platform"
-
-# Crie um repositório no GitHub e faça push
-git remote add origin https://github.com/seu-usuario/analytics-engineering-platform.git
-git push -u origin main
 ```
 
-#### No LinkedIn:
-- Adicione link do GitHub no perfil
-- Mencione as tecnologias: dbt, Airflow, PostgreSQL, Docker
-- Destaque: "Plataforma completa de Analytics Engineering com CI/CD"
-
----
-
-### 2. **Para Demonstração ao Vivo** 💻
-
+2. **Configure as variáveis de ambiente**
 ```bash
-# Quick start (3 comandos!)
-make setup      # Configuração inicial
-make up         # Inicia containers
-make dbt-run    # Executa transformações
-
-# Acessar interfaces
-# Airflow: http://localhost:8080 (admin/admin)
-# dbt Docs: http://localhost:8081
+cp .env.example .env
 ```
 
----
-
-### 3. **Para Entrevistas Técnicas** 🎤
-
-**Prepare-se para explicar:**
-
-1. **Arquitetura**
-   - "Implementei a arquitetura Medallion (Bronze/Silver/Gold)"
-   - "Separação clara entre staging e marts"
-
-2. **Modelagem**
-   - "Star schema com fatos (fct_orders) e dimensões (dim_customers, dim_products)"
-   - "Cálculos de métricas como CLV, cohort analysis"
-
-3. **Qualidade**
-   - "Testes automatizados em todas as camadas"
-   - "CI/CD com GitHub Actions"
-
-4. **Orquestração**
-   - "DAGs no Airflow para execução diária e semanal"
-   - "Retry logic e monitoramento"
-
-5. **DevOps**
-   - "Docker para ambiente consistente"
-   - "Makefile para automação"
-
----
-
-## 🏆 Diferenciais para Recrutadores
-
-| Aspecto | O que demonstra |
-|---------|----------------|
-| **Arquitetura Completa** | Visão end-to-end, não apenas SQL |
-| **Código Limpo** | Boas práticas, nomenclatura consistente |
-| **Testes** | Preocupação com qualidade |
-| **Documentação** | Capacidade de comunicação técnica |
-| **CI/CD** | Experiência com DevOps |
-| **Docker** | Conhecimento de infraestrutura |
-
----
-
-## 📊 Principais Modelos
-
-### Staging (Silver Layer)
-- `stg_customers` - Clientes limpos
-- `stg_orders` - Pedidos padronizados  
-- `stg_products` - Produtos com margens
-- `stg_order_items` - Itens de pedidos
-
-### Marts (Gold Layer)
-- `fct_orders` - Fato de pedidos com métricas
-- `dim_customers` - Dimensão de clientes com segmentação
-- `dim_products` - Dimensão de produtos com performance
-- `revenue_metrics` - KPIs financeiros
-- `customer_metrics` - Análise de cohort
-
----
-
-## 🎨 Personalizações Recomendadas
-
-### Antes de Publicar:
-
-1. **README.md**
-   - Substitua "Seu Nome" pelo seu nome
-   - Adicione seu GitHub/LinkedIn
-   - Adicione prints/screenshots
-
-2. **Dados**
-   - Execute `python scripts/seed_data.py` para gerar dados
-   - Ou adicione seus próprios dados de exemplo
-
-3. **Documentação**
-   - Adicione casos de uso específicos
-   - Inclua diagramas (use draw.io ou Mermaid)
-
-4. **GitHub**
-   - Adicione badges (build status, license)
-   - Crie um CHANGELOG.md
-   - Adicione Issues/Projects
-
----
-
-## 💡 Dicas de Apresentação
-
-### Para o README do GitHub:
-```markdown
-## Screenshots
-
-### dbt Lineage Graph
-![dbt Lineage](images/lineage.png)
-
-### Airflow DAG
-![Airflow](images/airflow-dag.png)
-
-### Metrics Dashboard
-![Dashboard](images/dashboard.png)
-```
-
-### Para LinkedIn:
-> "Desenvolvi uma plataforma completa de Analytics Engineering utilizando
-> dbt, Airflow e PostgreSQL. O projeto demonstra modelagem dimensional,
-> orquestração de pipelines, testes automatizados e CI/CD. 
-> 
-> Stack: dbt | Airflow | PostgreSQL | Docker | Python
-> 
-> Confira no GitHub: [link]"
-
----
-
-## 🔧 Comandos Essenciais
-
+3. **Inicie os containers**
 ```bash
-# Setup e execução
-make setup              # Setup inicial
-make up                 # Inicia containers  
-make dbt-run            # Executa modelos
-make dbt-test           # Executa testes
-make dbt-docs           # Gera documentação
-
-# Desenvolvimento
-make dbt-compile        # Compila SQL
-make lint               # Linting SQL
-make validate           # Valida dados
-
-# Deploy
-make deploy-dev         # Deploy dev
-make deploy-prod        # Deploy prod
-make full-refresh       # Full refresh
-
-# Limpeza
-make down               # Para containers
-make clean              # Limpa artefatos
+make setup
+make up
 ```
 
+4. **Execute as transformações dbt**
+```bash
+make dbt-run
+```
+
+5. **Acesse as interfaces**
+- Airflow: http://localhost:8080
+- dbt Docs: http://localhost:8081
+- PostgreSQL: localhost:5432
+
+## ✨ Features
+
+### 1. Transformação de Dados (dbt)
+- Modelagem Dimensional: Star schema com fatos e dimensões
+- Incremental Models: Processamento eficiente
+- Snapshots: Histórico de mudanças (SCD Type 2)
+- Testes Automatizados: Validação de qualidade
+
+### 2. Orquestração (Airflow)
+- DAGs Modulares: Workflows organizados
+- Retry Logic: Tratamento de falhas
+- Monitoring: Alertas e notificações
+- Scheduling: Execução automatizada
+
+### 3. Qualidade de Dados
+- Schema Tests: Validação de estrutura
+- Data Tests: Validação de valores
+- Freshness Checks: Verificação de atualização
+
+### 4. Documentação
+- Auto-generated Docs: Documentação automática via dbt
+- Data Lineage: Rastreamento de origem dos dados
+- Data Dictionary: Catálogo de dados
+
+## 💼 Casos de Uso
+
+### Dashboard de Vendas
+- Análise de receita por período
+- Performance de produtos
+- Análise de cohort de clientes
+
+### Marketing Analytics
+- ROI de campanhas
+- Funil de conversão
+- Customer Lifetime Value (CLV)
+
+### Finance Analytics
+- Métricas MRR/ARR
+- Churn analysis
+- Forecasting de receita
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT.
+
+## 👤 Autor
+
+**Seu Nome**
+- GitHub: [@seu-usuario](https://github.com/seu-usuario)
+- LinkedIn: [Seu Perfil](https://linkedin.com/in/seu-perfil)
+
 ---
 
-## 📞 Próximos Passos
-
-1. ✅ Descompacte o projeto
-2. ✅ Suba no seu GitHub
-3. ✅ Execute localmente (`make up`)
-4. ✅ Tire screenshots
-5. ✅ Adicione ao LinkedIn
-6. ✅ Personalize com suas informações
-7. ✅ Adicione ao seu portfólio
-
----
-
-## 🎯 Objetivos Alcançados
-
-- ✅ Projeto completo de Analytics Engineering
-- ✅ Código production-ready
-- ✅ Documentação profissional
-- ✅ CI/CD configurado
-- ✅ Testes automatizados
-- ✅ Fácil de demonstrar
-
----
-
-## 📚 Recursos Adicionais
-
-**Documentação no Projeto:**
-- `README.md` - Visão geral
-- `PROJECT_OVERVIEW.md` - Detalhes técnicos
-- `docs/architecture.md` - Arquitetura detalhada
-- `docs/setup-guide.md` - Guia de instalação
-
-**Para Aprender Mais:**
-- [dbt Docs](https://docs.getdbt.com/)
-- [Airflow Docs](https://airflow.apache.org/)
-- [Analytics Engineering Guide](https://www.getdbt.com/analytics-engineering/)
-
----
-
-## ⭐ Dica Final
-
-**Este projeto mostra que você:**
-- Entende Analytics Engineering end-to-end
-- Sabe trabalhar com ferramentas modernas
-- Escreve código limpo e testado
-- Documenta bem seu trabalho
-- Pensa em produção e escalabilidade
-
-**Use isso a seu favor em entrevistas! 🚀**
-
----
-
-**Boa sorte com seu portfólio! 🎉**
+⭐ Se este projeto foi útil, considere dar uma estrela!
